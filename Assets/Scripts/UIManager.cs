@@ -27,17 +27,27 @@ public class UIManager : MonoBehaviour
         {
             if (!paused)
             {
-                pauseMenu.SetActive(true);
-                Time.timeScale = 0f;
-                paused = true;
+                Pause();
             }
             else
             {
-                pauseMenu.SetActive(false);
-                Time.timeScale = 1f;
-                paused = false;
+                Resume();
             }
 
         }
+    }
+
+    public void Pause()
+    {
+        pauseMenu.SetActive(true);
+        Time.timeScale = 0f;
+        paused = true;
+    }
+
+    public void Resume()
+    {
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1f;
+        paused = false;
     }
 }
