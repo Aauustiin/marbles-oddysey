@@ -4,7 +4,7 @@ using UnityEngine;
 
 using UnityEngine.InputSystem;
 
-public class Level : MonoBehaviour
+public class LevelController : MonoBehaviour
 {
     [SerializeField] float MAX_TILT_ANGLE = 45f;
 
