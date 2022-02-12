@@ -278,6 +278,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 28b3ccd3-2549-4086-80fc-76cefc68b133
     m_ActionName: Gameplay/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ded833a2-a6f2-4b34-af39-1ebdb4286c96
+    m_ActionName: Gameplay/Jump Cancel[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
@@ -295,8 +299,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 139818f8d9a0c0d48941eb33fb14c221, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  START_JUMP_SPEED: 0
-  END_JUMP_SPEED: 0
+  START_JUMP_SPEED: 5
+  END_JUMP_SPEED: 3
   GROUNDED_THRESHOLD: 1
 --- !u!1 &573797098
 GameObject:
