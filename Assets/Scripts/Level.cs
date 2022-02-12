@@ -6,15 +6,13 @@ using UnityEngine.InputSystem;
 
 public class Level : MonoBehaviour
 {
-    const float MAX_TILT_ANGLE = 45f;
+    [SerializeField] float MAX_TILT_ANGLE = 45f;
 
-    // Start is called before the first frame update
     void Start()
     {
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         

@@ -7,8 +7,9 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     Rigidbody playerRigidbody;
-    public float JUMP_THRUST;
-    public float GROUNDED_THRESHOLD; // The distance from the ground beneath which the player is considered grounded.
+    [SerializeField] private float START_JUMP_SPEED; // The player's jump velocity when they press the jump button.
+    [SerializeField] private float END_JUMP_SPEED; //  The player's jump velocity when they release the jump button.
+    [SerializeField] private float GROUNDED_THRESHOLD; // The distance from the ground beneath which the player is considered grounded.
 
     Vector3 collisionNormal; // The normal of the last surface we collided with.
     bool grounded;
@@ -33,9 +34,17 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext value)
     {
-        if (grounded)
+        if (grounded & value.performed)
         {
-            playerRigidbody.AddForce(transform.parent.up * JUMP_THRUST);
+            playerRigidbody.velocity += START_JUMP_SPEED * collisionNormal;
+        }
+    }
+
+    public void OnJumpCancel(InputAction.CallbackContext value)
+    {
+        if (value.performed)
+        {
+            playerRigidbody.velocity += (END_JUMP_SPEED - Vector3.Dot(playerRigidbody.velocity, collisionNormal)) * collisionNormal;
         }
     }
 
@@ -47,6 +56,7 @@ public class PlayerController : MonoBehaviour
         int closestContact = 0;
         for (var i = 0; i < contacts.Length; i++)
         {
+            // Of all the surfaces we are colliding with, we choose the one closest to being right underneath us.
             var d = Vector3.Distance(contacts[i].normal, transform.parent.up);
             if (d < lowestDistance)
             {
