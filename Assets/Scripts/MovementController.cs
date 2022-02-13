@@ -4,28 +4,19 @@ using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
-    public Vector3[] positionKeyframes;
-    public Vector3[] rotationKeyframes;
-    public float playbackDuration;
-
-    float startTime;
-    float t;
-    int i = 0;
-
-    void Start()
+    void OnTriggerEnter(Collider collisionInfo)
     {
-        startTime = Time.time;
+        if (collisionInfo.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            collisionInfo.transform.SetParent(transform);
+        }
     }
 
-    void Update()
+    void OnTriggerExit(Collider collisionInfo)
     {
-        t = (Time.time - startTime) / playbackDuration;
-        transform.localPosition = Vector3.Lerp(positionKeyframes[i], positionKeyframes[(i + 1) % positionKeyframes.Length], t);
-        transform.localRotation = Quaternion.Euler(Vector3.Lerp(rotationKeyframes[i], rotationKeyframes[(i + 1) % rotationKeyframes.Length], t));
-        if (t > 1)
+        if (collisionInfo.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            i = (i + 1) % positionKeyframes.Length;
-            startTime = Time.time;
+            collisionInfo.transform.SetParent(transform.parent.parent);
         }
     }
 }
