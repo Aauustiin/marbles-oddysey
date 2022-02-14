@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float START_JUMP_SPEED; // The player's jump velocity when they press the jump button.
     [SerializeField] private float END_JUMP_SPEED; //  The player's jump velocity when they release the jump button.
     [SerializeField] private float GROUNDED_THRESHOLD; // The distance from the ground beneath which the player is considered grounded.
+    [SerializeField] MyGameManager gameManager;
 
     Vector3 collisionNormal; // The normal of the last surface we collided with.
     bool grounded;
@@ -65,5 +66,10 @@ public class PlayerController : MonoBehaviour
             }
         }
         collisionNormal = collisionInfo.GetContact(closestContact).normal;
+    }
+
+    public void OnDeath()
+    {
+        transform.position = gameManager.currentCheckpoint;
     }
 }

@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeathPlane : MonoBehaviour
+public class Checkpoint : MonoBehaviour
 {
-    [SerializeField] PlayerController player;
+    public MyGameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
@@ -18,11 +18,11 @@ public class DeathPlane : MonoBehaviour
         
     }
 
-    void OnCollisionEnter(Collision collisionInfo)
+    void OnTriggerEnter(Collider collisionInfo)
     {
-        if (collisionInfo.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if (collisionInfo.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            player.OnDeath();
+            gameManager.currentCheckpoint = transform.position;
         }
     }
 }
