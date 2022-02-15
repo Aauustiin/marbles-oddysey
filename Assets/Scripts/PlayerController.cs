@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
 
     Vector3 collisionNormal; // The normal of the last surface we collided with.
     bool grounded;
+    int health = 3;
 
     void Start()
     {
@@ -68,8 +69,31 @@ public class PlayerController : MonoBehaviour
         collisionNormal = collisionInfo.GetContact(closestContact).normal;
     }
 
+    public void TakeDamage()
+    {
+        health--;
+        if (health == 0)
+        {
+            OnDeath();
+        }
+    }
+
+    public void Heal()
+    {
+        if (health < 3)
+        {
+            health++;
+        }
+    }
+
+    public void FullHeal()
+    {
+        health = 3;
+    }
+
     public void OnDeath()
     {
         transform.position = gameManager.currentCheckpoint;
+        health = 3;
     }
 }
