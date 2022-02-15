@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     Rigidbody playerRigidbody;
+    [SerializeField] private float brakeDrag;
+    [SerializeField] private float normalDrag;
     [SerializeField] private float START_JUMP_SPEED; // The player's jump velocity when they press the jump button.
     [SerializeField] private float END_JUMP_SPEED; //  The player's jump velocity when they release the jump button.
     [SerializeField] private float GROUNDED_THRESHOLD; // The distance from the ground beneath which the player is considered grounded.
@@ -47,6 +49,17 @@ public class PlayerController : MonoBehaviour
         if (value.performed)
         {
             playerRigidbody.velocity += (END_JUMP_SPEED - Vector3.Dot(playerRigidbody.velocity, collisionNormal)) * collisionNormal;
+        }
+    }
+
+    public void OnBrake(InputAction.CallbackContext value)
+    {
+        if (value.performed)
+        {
+            playerRigidbody.drag = brakeDrag;
+        } else if (value.canceled)
+        {
+            playerRigidbody.drag = normalDrag;
         }
     }
 
