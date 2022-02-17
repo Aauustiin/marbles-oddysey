@@ -4,19 +4,32 @@ using UnityEngine;
 
 public class MyGameManager : MonoBehaviour
 {
+    public static MyGameManager Instance { get; set; }
+
     public Vector3 currentCheckpoint;
     int maxCollectables = 1;
     int currentCollectables = 0;
-    [SerializeField] UIManager uiManager;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
-        uiManager.SetCollectables(currentCollectables, maxCollectables);
+        UIManager.Instance.SetCollectables(currentCollectables, maxCollectables);
     }
 
     public void FoundCollectable()
     {
         currentCollectables++;
-        uiManager.SetCollectables(currentCollectables, maxCollectables);
+        UIManager.Instance.SetCollectables(currentCollectables, maxCollectables);
     }
 }

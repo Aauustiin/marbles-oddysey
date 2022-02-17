@@ -7,12 +7,26 @@ using UnityEngine.InputSystem;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance { get; set; }
+
     [SerializeField] GameObject dialogBox;
     [SerializeField] TextMeshProUGUI dialogText;
     [SerializeField] TextMeshProUGUI healthText;
     [SerializeField] TextMeshProUGUI collectablesText;
     [SerializeField] GameObject pauseMenu;
     bool paused = false;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     public void OnPause(InputAction.CallbackContext value)
     {

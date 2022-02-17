@@ -12,8 +12,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float START_JUMP_SPEED; // The player's jump velocity when they press the jump button.
     [SerializeField] private float END_JUMP_SPEED; //  The player's jump velocity when they release the jump button.
     [SerializeField] private float GROUNDED_THRESHOLD; // The distance from the ground beneath which the player is considered grounded.
-    [SerializeField] MyGameManager gameManager;
-    [SerializeField] UIManager uiManager;
 
     Vector3 collisionNormal; // The normal of the last surface we collided with.
     bool grounded;
@@ -22,7 +20,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         playerRigidbody = GetComponent<Rigidbody>();
-        uiManager.SetHealth(health);
+        UIManager.Instance.SetHealth(health);
     }
 
     void Update()
@@ -91,7 +89,7 @@ public class PlayerController : MonoBehaviour
         {
             OnDeath();
         }
-        uiManager.SetHealth(health);
+        UIManager.Instance.SetHealth(health);
     }
 
     public void Heal()
@@ -100,19 +98,19 @@ public class PlayerController : MonoBehaviour
         {
             health++;
         }
-        uiManager.SetHealth(health);
+        UIManager.Instance.SetHealth(health);
     }
 
     public void FullHeal()
     {
         health = 3;
-        uiManager.SetHealth(health);
+        UIManager.Instance.SetHealth(health);
     }
 
     public void OnDeath()
     {
-        transform.position = gameManager.currentCheckpoint;
+        transform.position = MyGameManager.Instance.currentCheckpoint;
         health = 3;
-        uiManager.SetHealth(health);
+        UIManager.Instance.SetHealth(health);
     }
 }

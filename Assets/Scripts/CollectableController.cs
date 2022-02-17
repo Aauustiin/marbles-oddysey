@@ -5,7 +5,6 @@ using UnityEngine;
 public class CollectableController : MonoBehaviour
 {
     public bool found = false;
-    [SerializeField] MyGameManager gameManager;
 
     void OnTriggerEnter(Collider collisionInfo)
     {
@@ -14,7 +13,7 @@ public class CollectableController : MonoBehaviour
             GetComponent<Renderer>().enabled = false;
             GetComponent<Collider>().enabled = false;
             found = true;
-            gameManager.FoundCollectable();
+            MyGameManager.Instance.FoundCollectable();
         }
     }
 }
