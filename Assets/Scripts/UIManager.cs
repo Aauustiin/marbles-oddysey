@@ -8,7 +8,9 @@ using UnityEngine.InputSystem;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] GameObject dialogBox;
-    public TextMeshProUGUI dialogText;
+    [SerializeField] TextMeshProUGUI dialogText;
+    [SerializeField] TextMeshProUGUI healthText;
+    [SerializeField] TextMeshProUGUI collectablesText;
     [SerializeField] GameObject pauseMenu;
     bool paused = false;
 
@@ -47,6 +49,30 @@ public class UIManager : MonoBehaviour
         dialogBox.SetActive(true);
         dialogText.text = text;
         StartCoroutine(RemoveAfterSeconds(5, dialogBox));
+    }
+
+    public void SetHealth(int health)
+    {
+        switch (health)
+        {
+            case 1:
+                healthText.text = "<3";
+                break;
+            case 2:
+                healthText.text = "<3 <3";
+                break;
+            case 3:
+                healthText.text = "<3 <3 <3";
+                break;
+            default:
+                Debug.Log("Error: SetHealth() was passed an invalid value");
+                break;
+        }
+    }
+
+    public void SetCollectables(int currentCollectables, int maxCollectables)
+    {
+        collectablesText.text = currentCollectables + "/" + maxCollectables;
     }
 
     IEnumerator RemoveAfterSeconds(int seconds, GameObject obj)

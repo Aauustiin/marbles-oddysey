@@ -5,16 +5,18 @@ using UnityEngine;
 public class MyGameManager : MonoBehaviour
 {
     public Vector3 currentCheckpoint;
+    int maxCollectables = 1;
+    int currentCollectables = 0;
+    [SerializeField] UIManager uiManager;
 
-    // Start is called before the first frame update
     void Start()
     {
-        
+        uiManager.SetCollectables(currentCollectables, maxCollectables);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void FoundCollectable()
     {
-        
+        currentCollectables++;
+        uiManager.SetCollectables(currentCollectables, maxCollectables);
     }
 }

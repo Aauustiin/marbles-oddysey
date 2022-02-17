@@ -5,18 +5,7 @@ using UnityEngine;
 public class CollectableController : MonoBehaviour
 {
     public bool found = false;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] MyGameManager gameManager;
 
     void OnTriggerEnter(Collider collisionInfo)
     {
@@ -25,6 +14,7 @@ public class CollectableController : MonoBehaviour
             GetComponent<Renderer>().enabled = false;
             GetComponent<Collider>().enabled = false;
             found = true;
+            gameManager.FoundCollectable();
         }
     }
 }
