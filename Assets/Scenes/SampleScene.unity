@@ -1239,6 +1239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiManager: {fileID: 1848750597}
+  npcData: {fileID: 11400000, guid: e4bec41fc6973f0448b545841e28d97d, type: 2}
 --- !u!1 &895680666
 GameObject:
   m_ObjectHideFlags: 0
