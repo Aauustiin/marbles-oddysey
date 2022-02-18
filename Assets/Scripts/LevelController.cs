@@ -8,16 +8,6 @@ public class LevelController : MonoBehaviour
 {
     [SerializeField] float MAX_TILT_ANGLE = 45f;
 
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-        
-    }
-
     public void OnTilt(InputAction.CallbackContext value)
     {
         Vector2 rawMousePos = value.ReadValue<Vector2>();

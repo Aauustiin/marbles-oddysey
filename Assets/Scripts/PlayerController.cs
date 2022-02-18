@@ -7,15 +7,13 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     Rigidbody playerRigidbody;
-    [SerializeField] private float brakeDrag;
-    [SerializeField] private float normalDrag;
-    [SerializeField] private float START_JUMP_SPEED; // The player's jump velocity when they press the jump button.
-    [SerializeField] private float END_JUMP_SPEED; //  The player's jump velocity when they release the jump button.
-    [SerializeField] private float GROUNDED_THRESHOLD; // The distance from the ground beneath which the player is considered grounded.
-
     Vector3 collisionNormal; // The normal of the last surface we collided with.
     bool grounded;
     int health = 3;
+    Ray ray;
+    RaycastHit hitData;
+
+    [SerializeField] float brakeDrag, normalDrag, jumpSpeed, groundedThreshold;
 
     void Start()
     {
@@ -25,12 +23,13 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Ray ray = new Ray(transform.position, -collisionNormal);
-        RaycastHit hitData;
-        if (Physics.Raycast(ray, out hitData) & (hitData.distance < GROUNDED_THRESHOLD))
+        ray = new Ray(transform.position, -collisionNormal);
+
+        if (Physics.Raycast(ray, out hitData) & (hitData.distance < groundedThreshold))
         {
             grounded = true;
-        } else
+        }
+        else
         {
             grounded = false;
         }
@@ -40,24 +39,21 @@ public class PlayerController : MonoBehaviour
     {
         if (grounded & value.performed)
         {
-            playerRigidbody.velocity += START_JUMP_SPEED * collisionNormal;
+            playerRigidbody.velocity += jumpSpeed * collisionNormal;
         }
-    }
-
-    public void OnJumpCancel(InputAction.CallbackContext value)
-    {
-        if (value.performed)
+        else if (value.canceled)
         {
-            playerRigidbody.velocity += (END_JUMP_SPEED - Vector3.Dot(playerRigidbody.velocity, collisionNormal)) * collisionNormal;
+            playerRigidbody.velocity -= Vector3.Dot(playerRigidbody.velocity, collisionNormal) * collisionNormal;
         }
     }
 
     public void OnBrake(InputAction.CallbackContext value)
     {
-        if (value.performed)
+        if (grounded & value.performed)
         {
             playerRigidbody.drag = brakeDrag;
-        } else if (value.canceled)
+        }
+        else if (value.canceled)
         {
             playerRigidbody.drag = normalDrag;
         }

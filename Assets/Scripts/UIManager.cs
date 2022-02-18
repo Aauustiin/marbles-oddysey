@@ -9,11 +9,8 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; set; }
 
-    [SerializeField] GameObject dialogBox;
-    [SerializeField] TextMeshProUGUI dialogText;
-    [SerializeField] TextMeshProUGUI healthText;
-    [SerializeField] TextMeshProUGUI collectablesText;
-    [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject dialogBox, pauseMenu;
+    [SerializeField] TextMeshProUGUI dialogText, healthText, collectablesText;
     bool paused = false;
 
     void Awake()

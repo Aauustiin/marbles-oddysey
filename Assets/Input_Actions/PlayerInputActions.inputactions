@@ -15,15 +15,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Jump Cancel",
-                    "type": "Button",
-                    "id": "ded833a2-a6f2-4b34-af39-1ebdb4286c96",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Brake",
                     "type": "Button",
                     "id": "1c517880-e621-43a5-b0a4-f6eda42d1ea7",
@@ -38,21 +29,10 @@
                     "name": "",
                     "id": "41e61863-c8db-4f6d-9bef-07ffaed4f8c3",
                     "path": "<Keyboard>/space",
-                    "interactions": "Press",
+                    "interactions": "",
                     "processors": "",
                     "groups": "KeyboardAndMouse",
                     "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "83e98ea3-4108-43ca-856b-62ba633cd192",
-                    "path": "<Keyboard>/space",
-                    "interactions": "Press(behavior=1)",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Jump Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
