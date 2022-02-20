@@ -244,7 +244,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8105f4646b235d44809da9ada6bb445, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 519243002}
   bonkMagnitude: 3.5
 --- !u!136 &105520792
 CapsuleCollider:
@@ -1895,7 +1894,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 50b1ff9bd9b6c134582983f7e322848b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2518,10 +2517,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogBox: {fileID: 1289174324}
+  pauseMenu: {fileID: 666760407}
   dialogText: {fileID: 475770932}
   healthText: {fileID: 550471765}
   collectablesText: {fileID: 1669253519}
-  pauseMenu: {fileID: 666760407}
 --- !u!114 &1848750598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2957,4 +2956,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907e4427d62a20f4e940ae00e5f6188e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 519243002}
