@@ -6,25 +6,23 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    Rigidbody playerRigidbody;
-    Vector3 collisionNormal; // The normal of the last surface we collided with.
-    bool grounded;
-    int health = 3;
-    Ray ray;
-    RaycastHit hitData;
+    private Rigidbody playerRigidbody;
+    private Ray ray;
+    private RaycastHit hitData;
+    private Vector3 collisionNormal; // The normal of the last surface we collided with.
+    private bool grounded;
 
-    [SerializeField] float brakeDrag, normalDrag, jumpSpeed, groundedThreshold;
+    [SerializeField] private float brakeDrag, normalDrag, jumpSpeed, groundedThreshold;
 
     void Start()
     {
         playerRigidbody = GetComponent<Rigidbody>();
-        UIManager.Instance.SetHealth(health);
     }
 
     void Update()
     {
         ray = new Ray(transform.position, -collisionNormal);
-
+    
         if (Physics.Raycast(ray, out hitData) & (hitData.distance < groundedThreshold))
         {
             grounded = true;
@@ -32,30 +30,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             grounded = false;
-        }
-    }
-
-    public void OnJump(InputAction.CallbackContext value)
-    {
-        if (grounded & value.performed)
-        {
-            playerRigidbody.velocity += jumpSpeed * collisionNormal;
-        }
-        else if (value.canceled)
-        {
-            playerRigidbody.velocity -= Vector3.Dot(playerRigidbody.velocity, collisionNormal) * collisionNormal;
-        }
-    }
-
-    public void OnBrake(InputAction.CallbackContext value)
-    {
-        if (grounded & value.performed)
-        {
-            playerRigidbody.drag = brakeDrag;
-        }
-        else if (value.canceled)
-        {
-            playerRigidbody.drag = normalDrag;
         }
     }
 
@@ -78,35 +52,48 @@ public class PlayerController : MonoBehaviour
         collisionNormal = collisionInfo.GetContact(closestContact).normal;
     }
 
-    public void TakeDamage()
-    {
-        health--;
-        if (health == 0)
-        {
-            OnDeath();
-        }
-        UIManager.Instance.SetHealth(health);
-    }
-
-    public void Heal()
-    {
-        if (health < 3)
-        {
-            health++;
-        }
-        UIManager.Instance.SetHealth(health);
-    }
-
-    public void FullHeal()
-    {
-        health = 3;
-        UIManager.Instance.SetHealth(health);
-    }
-
     public void OnDeath()
     {
-        transform.position = MyGameManager.Instance.currentCheckpoint;
-        health = 3;
-        UIManager.Instance.SetHealth(health);
+        transform.position = Vector3.zero;
+        transform.rotation = Quaternion.Euler(Vector3.zero);
+        playerRigidbody.velocity = Vector3.zero;
+    }
+
+    public void Freeze()
+    {
+        playerRigidbody.constraints = RigidbodyConstraints.FreezePosition;
+    }
+
+    public void Unfreeze()
+    {
+        playerRigidbody.constraints = RigidbodyConstraints.None;
+    }
+
+    public void OnJump(InputAction.CallbackContext value)
+    {
+        if (grounded & value.performed)
+        {
+            playerRigidbody.velocity += jumpSpeed * collisionNormal;
+        }
+        else if (value.canceled)
+        {
+            float jumpMagnitude = Vector3.Dot(playerRigidbody.velocity, collisionNormal);
+            if (jumpMagnitude > 0)
+            {
+                playerRigidbody.velocity -= Vector3.Dot(playerRigidbody.velocity, collisionNormal) * collisionNormal;
+            }
+        }
+    }
+
+    public void OnBrake(InputAction.CallbackContext value)
+    {
+        if (grounded & value.performed)
+        {
+            playerRigidbody.drag = brakeDrag;
+        }
+        else if (value.canceled)
+        {
+            playerRigidbody.drag = normalDrag;
+        }
     }
 }
