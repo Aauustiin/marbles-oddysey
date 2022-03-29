@@ -94,20 +94,31 @@ public class UIManager : MonoBehaviour
     // RACE END SCREEN
 
     [SerializeField] private GameObject raceEndScreen;
-    [SerializeField] private TextMeshProUGUI timeText;
+    [SerializeField] private TextMeshProUGUI finishTimeText, parTimeText;
     private RaceTrack currentRaceTrack;
+    private bool raceEndScreenShowing;
 
-    public void ShowRaceEndScreen(float time, RaceTrack raceTrack)
+    public void ShowRaceEndScreen(float time, float parTime, RaceTrack raceTrack)
     {
+        raceEndScreenShowing = true;
         Time.timeScale = 0f;
         currentRaceTrack = raceTrack;
         raceEndScreen.SetActive(true);
-        float roundedTime = Mathf.Round(time * 100f) * 0.01f;
-        timeText.text = "Final Time: " + roundedTime.ToString() + "s";
+        float roundedFinishTime = Mathf.Round(time * 100f) * 0.01f;
+
+        string smiley = "";
+        if (time <= parTime)
+        {
+            smiley = " :)";
+        }
+
+        finishTimeText.text = "Final Time: " + roundedFinishTime.ToString() + "s" + smiley;
+        parTimeText.text = "Par Time: " + parTime.ToString() + "s";
     }
 
     public void RetryRace()
     {
+        raceEndScreenShowing = false;
         Time.timeScale = 1f;
         raceEndScreen.SetActive(false);
         currentRaceTrack.InitializeRace();
@@ -115,11 +126,40 @@ public class UIManager : MonoBehaviour
 
     public void ContinueFromRace()
     {
+        raceEndScreenShowing = false;
         Time.timeScale = 1f;
         raceEndScreen.SetActive(false);
+        currentRaceTrack.MovePlayerToStartPosition();
     }
 
-    
+    // GAME END SCREEN
+
+    [SerializeField] private GameObject gameEndScreen;
+
+    public IEnumerator ShowGameEndScreen()
+    {
+        if (raceEndScreenShowing)
+        {
+            yield return new WaitForSeconds(1);
+            StartCoroutine(ShowGameEndScreen());
+        }
+        else
+        {
+            Time.timeScale = 0f;
+            gameEndScreen.SetActive(true);
+        }
+    }
+
+    public void QuitToMainMenuFromEndScreen()
+    {
+        //Stuff
+    }
+
+    public void ContinueFromEndScreen()
+    {
+        Time.timeScale = 1f;
+        gameEndScreen.SetActive(false);
+    }
 
     //[SerializeField] GameObject dialogBox
     //[SerializeField] TextMeshProUGUI dialogText;

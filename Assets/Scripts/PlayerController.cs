@@ -11,12 +11,14 @@ public class PlayerController : MonoBehaviour
     private RaycastHit hitData;
     private Vector3 collisionNormal; // The normal of the last surface we collided with.
     private bool grounded;
+    public Vector3 RespawnPoint;
 
     [SerializeField] private float brakeDrag, normalDrag, jumpSpeed, groundedThreshold;
 
     void Start()
     {
         playerRigidbody = GetComponent<Rigidbody>();
+        RespawnPoint = Vector3.zero;
     }
 
     void Update()
@@ -54,7 +56,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnDeath()
     {
-        transform.position = Vector3.zero;
+        transform.position = RespawnPoint;
         transform.rotation = Quaternion.Euler(Vector3.zero);
         playerRigidbody.velocity = Vector3.zero;
     }
