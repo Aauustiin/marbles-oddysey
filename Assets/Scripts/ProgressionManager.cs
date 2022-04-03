@@ -9,6 +9,8 @@ public class ProgressionManager : MonoBehaviour
     [SerializeField] bool[] trackCompletion;
     [SerializeField] int trackCount;
 
+    private bool gameFinished;
+
     void Awake()
     {
         if (Instance == null)
@@ -29,6 +31,8 @@ public class ProgressionManager : MonoBehaviour
         {
             trackCompletion[i] = false;
         }
+
+        gameFinished = false;
     }
 
     public void ParTimeAchieved(int trackID)
@@ -41,8 +45,9 @@ public class ProgressionManager : MonoBehaviour
             flag = flag && track;
         }
 
-        if (flag)
+        if (flag && !gameFinished)
         {
+            gameFinished = true;
             StartCoroutine(UIManager.Instance.ShowGameEndScreen());
         }
     }

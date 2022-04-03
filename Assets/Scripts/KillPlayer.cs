@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class KillPlayer : MonoBehaviour
 {
-    void OnCollisionEnter(Collision collisionInfo)
+    void OnTriggerStay(Collider collisionInfo)
     {
-        if (collisionInfo.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if (collisionInfo.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             FindObjectOfType<PlayerController>().OnDeath();
         }

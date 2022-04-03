@@ -21,6 +21,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    [SerializeField] private AudioClip clickSFX;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private float clickVolume;
+
     void Start()
     {
         countdown.enabled = false;
@@ -49,6 +53,7 @@ public class UIManager : MonoBehaviour
 
     public void Pause()
     {
+        audioSource.PlayOneShot(clickSFX, clickVolume);
         pauseMenu.SetActive(true);
         Time.timeScale = 0f;
         paused = true;
@@ -56,6 +61,7 @@ public class UIManager : MonoBehaviour
 
     public void Resume()
     {
+        audioSource.PlayOneShot(clickSFX, clickVolume);
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
         paused = false;
@@ -63,6 +69,7 @@ public class UIManager : MonoBehaviour
 
     // TIMER UI
 
+    [SerializeField] private GameObject stopwatchParent;
     [SerializeField] private TextMeshProUGUI countdown, stopwatch;
 
     public void UpdateCountdown(string text)
@@ -82,10 +89,12 @@ public class UIManager : MonoBehaviour
     {
         if (text == "")
         {
+            stopwatchParent.SetActive(false);
             stopwatch.enabled = false;
         }
         else
         {
+            stopwatchParent.SetActive(true);
             stopwatch.enabled = true;
             stopwatch.text = text;
         }
@@ -118,6 +127,7 @@ public class UIManager : MonoBehaviour
 
     public void RetryRace()
     {
+        audioSource.PlayOneShot(clickSFX, clickVolume);
         raceEndScreenShowing = false;
         Time.timeScale = 1f;
         raceEndScreen.SetActive(false);
@@ -126,6 +136,7 @@ public class UIManager : MonoBehaviour
 
     public void ContinueFromRace()
     {
+        audioSource.PlayOneShot(clickSFX, clickVolume);
         raceEndScreenShowing = false;
         Time.timeScale = 1f;
         raceEndScreen.SetActive(false);
@@ -135,6 +146,8 @@ public class UIManager : MonoBehaviour
     // GAME END SCREEN
 
     [SerializeField] private GameObject gameEndScreen;
+    [SerializeField] private AudioClip endingSFX;
+    [SerializeField] private float endingVolume;
 
     public IEnumerator ShowGameEndScreen()
     {
@@ -147,33 +160,14 @@ public class UIManager : MonoBehaviour
         {
             Time.timeScale = 0f;
             gameEndScreen.SetActive(true);
+            audioSource.PlayOneShot(endingSFX, endingVolume);
         }
-    }
-
-    public void QuitToMainMenuFromEndScreen()
-    {
-        //Stuff
     }
 
     public void ContinueFromEndScreen()
     {
+        audioSource.PlayOneShot(clickSFX, clickVolume);
         Time.timeScale = 1f;
         gameEndScreen.SetActive(false);
     }
-
-    //[SerializeField] GameObject dialogBox
-    //[SerializeField] TextMeshProUGUI dialogText;
-
-    //public void DisplayDialog(string text)
-    //{
-    //    dialogBox.SetActive(true);
-    //    dialogText.text = text;
-    //    StartCoroutine(RemoveAfterSeconds(5, dialogBox));
-    //}
-
-    //IEnumerator RemoveAfterSeconds(int seconds, GameObject obj)
-    //{
-    //    yield return new WaitForSeconds(seconds);
-    //    obj.SetActive(false);
-    //}
 }

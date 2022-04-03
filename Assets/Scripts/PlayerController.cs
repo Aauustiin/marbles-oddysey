@@ -13,7 +13,9 @@ public class PlayerController : MonoBehaviour
     private bool grounded;
     public Vector3 RespawnPoint;
 
-    [SerializeField] private float brakeDrag, normalDrag, jumpSpeed, groundedThreshold;
+    [SerializeField] private float brakeDrag, normalDrag, jumpSpeed, groundedThreshold, fallVolume;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip fallSFX;
 
     void Start()
     {
@@ -56,9 +58,12 @@ public class PlayerController : MonoBehaviour
 
     public void OnDeath()
     {
+        audioSource.PlayOneShot(fallSFX, fallVolume);
+        FindObjectOfType<LevelController>().transform.rotation = Quaternion.Euler(Vector3.zero);
         transform.position = RespawnPoint;
         transform.rotation = Quaternion.Euler(Vector3.zero);
         playerRigidbody.velocity = Vector3.zero;
+        EventManager.TriggerPlayerDeath();
     }
 
     public void Freeze()

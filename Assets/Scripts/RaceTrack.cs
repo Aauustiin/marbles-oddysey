@@ -9,11 +9,17 @@ public class RaceTrack : MonoBehaviour
     [SerializeField] private int trackID;
     [SerializeField] private GameObject startLine, finishLine, parIndicator;
 
+    [SerializeField] private AudioClip countdownSFX, finishSFX, parSFX;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private float countdownVolume, finishVolume, parVolume;
+
     private float startTime;
     private bool raceUnderway;
 
     public void InitializeRace()
     {
+        EventManager.PlayerDeath += onPlayerDeath;
+        FindObjectOfType<LevelController>().transform.rotation = Quaternion.Euler(Vector3.zero);
         FindObjectOfType<PlayerController>().RespawnPoint = startPosition;
         finishLine.SetActive(true);
         startLine.SetActive(false);
@@ -25,6 +31,7 @@ public class RaceTrack : MonoBehaviour
         MovePlayerToStartPosition();
         FindObjectOfType<PlayerController>().Freeze();
 
+        audioSource.PlayOneShot(countdownSFX, countdownVolume);
         UIManager.Instance.UpdateCountdown("3");
         yield return new WaitForSeconds(1);
         UIManager.Instance.UpdateCountdown("2");
@@ -55,8 +62,15 @@ public class RaceTrack : MonoBehaviour
     void Update()
     {
         if (raceUnderway) {
-            UIManager.Instance.UpdateStopwatch((Time.time - startTime).ToString());
+            float roundedTime = Mathf.Round((Time.time - startTime) * 100f) * 0.01f;
+            string stringTime = (roundedTime).ToString();
+            UIManager.Instance.UpdateStopwatch(stringTime);
         }
+    }
+
+    private void onPlayerDeath()
+    {
+        startTime = Time.time;
     }
 
     public void EndRace()
@@ -65,14 +79,16 @@ public class RaceTrack : MonoBehaviour
         finishLine.SetActive(false);
         raceUnderway = false;
         float finishTime = Time.time - startTime;
-        FindObjectOfType<PlayerController>().RespawnPoint = Vector3.zero;
+        audioSource.PlayOneShot(finishSFX, finishVolume);
         UIManager.Instance.UpdateStopwatch("");
         UIManager.Instance.ShowRaceEndScreen(finishTime, parTime, this);
         if (finishTime <= parTime)
         {
+            audioSource.PlayOneShot(parSFX, parVolume);
             parTimeAchieved();
         }
         FindObjectOfType<PlayerController>().GetComponent<Rigidbody>().velocity = Vector3.zero;
+        EventManager.PlayerDeath -= onPlayerDeath;
     }
 
     void parTimeAchieved()
